@@ -1,13 +1,13 @@
 package com.company;
 
-public class blokchain {
+public class Model {
     private int index;
     private String data;
     private String timestamp;
     private String prevhash;
     private String hash;
 
-    public blokchain(int index, String data, String timestamp, String prevhash, String hash) {
+    public Model(int index, String data, String timestamp, String prevhash, String hash) {
         this.index = index;
         this.data = data;
         this.timestamp = timestamp;
