@@ -1,5 +1,7 @@
 package com.company;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -50,10 +52,28 @@ public class Main {
         Model data3 = new Model(index3, fill3, timest3, hash2, hash3);
         models.add(data3);
 
-
+        String data = "";
         for (int i = 0; i < 3; i++) {
-            System.out.println("Index " + (i+1) + " : " + models.get(i+1).getIndex());
-            System.out.println("Data " + (i+1) + " : " + models.get(i+1).getData());
+            int ind = models.get(i + 1).getIndex();
+            String fill = models.get(i + 1).getData();
+            String time = models.get(i + 1).getTimestamp();
+            String prev = models.get(i + 1).getPrevhash();
+            String hash = models.get(i + 1).getHash();
+            System.out.println("Index " + (i + 1) + " : " + ind);
+            System.out.println("Data " + (i + 1) + " : " + fill);
+            data = data + String.valueOf(ind) + ", " + fill + ", " + time + ", " + prev + ", " + hash + "\n";
+        }
+
+        String fileName = "data.txt";
+
+        try {
+            FileWriter fileWriter = new FileWriter(fileName);
+            fileWriter.write(data);
+            fileWriter.close();
+
+            System.out.println("File berhasil ditulis!");
+        } catch (IOException e) {
+            System.out.println("Terjadi kesalahan karena: " + e.getMessage());
         }
 
     }
