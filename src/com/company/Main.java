@@ -5,18 +5,26 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
+
+    private static List<Model> models;
 
     public static void main(String[] args) {
         // write your code here
         //initiate object
+        Scanner input = new Scanner(System.in);
         Date date = new Date();
         SimpleDateFormat sf = new SimpleDateFormat("EyyyyMMddhhmmssa");
+        models = new ArrayList<>();
 
         //initiate genesis
         Model genesis = new Model(0, "genesis", "0", "0", "0");
+        models.add(genesis);
 
         //data 1
         int index1 = 100;
@@ -24,6 +32,7 @@ public class Main {
         String timest1 = sf.format(date);
         String hash1 = encrypt(String.valueOf(index1) + fill1 + timest1);
         Model data1 = new Model(index1, fill1, timest1, "0", hash1);
+        models.add(data1);
 
         //data 2
         int index2 = 101;
@@ -31,6 +40,7 @@ public class Main {
         String timest2 = sf.format(date);
         String hash2 = encrypt(String.valueOf(index2) + fill2 + timest2);
         Model data2 = new Model(index2, fill2, timest2, hash1, hash2);
+        models.add(data2);
 
         //data 3
         int index3 = 102;
@@ -38,13 +48,14 @@ public class Main {
         String timest3 = sf.format(date);
         String hash3 = encrypt(String.valueOf(index3) + fill3 + timest3);
         Model data3 = new Model(index3, fill3, timest3, hash2, hash3);
+        models.add(data3);
 
-        System.out.println("index 1 : " + data1.getIndex());
-        System.out.println("data 1  : " + data1.getData());
-        System.out.println("index 2 : " + data2.getIndex());
-        System.out.println("data 2  : " + data2.getData());
-        System.out.println("index 3 : " + data3.getIndex());
-        System.out.println("data 3  : " + data3.getData());
+
+        for (int i = 0; i < 3; i++) {
+            System.out.println("Index " + (i+1) + " : " + models.get(i+1).getIndex());
+            System.out.println("Data " + (i+1) + " : " + models.get(i+1).getData());
+        }
+
     }
 
 
