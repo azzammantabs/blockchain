@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static List<Model> models;
+    private static List<Blokchain> blokchains;
 
     public static void main(String[] args) {
         // write your code here
@@ -22,95 +22,49 @@ public class Main {
         Scanner input = new Scanner(System.in);
         Date date = new Date();
         SimpleDateFormat sf = new SimpleDateFormat("EyyyyMMddhhmmssa");
-        models = new ArrayList<>();
+        blokchains = new ArrayList<>();
 
-        //initiate genesis
-        Model genesis = new Model(0, "genesis", "0", "0", "0");
-        models.add(genesis);
+        //Create Node 1
+        Blokchain Block1 = new Blokchain();
+        Block1.clearBlokchain();
+        Block1.createGenesis();
 
-        //data 1
-        int index1 = 100;
-        String fill1 = "Azzam";
-        String timest1 = sf.format(date);
-        String hash1 = encrypt(String.valueOf(index1) + fill1 + timest1);
-        Model data1 = new Model(index1, fill1, timest1, "0", hash1);
-        models.add(data1);
+        //Create Node 2
+        Blokchain Block2 = new Blokchain();
+        Block2.clearBlokchain();
+        Block2.createGenesis();
 
-        //data 2
-        int index2 = 101;
-        String fill2 = "Motion";
-        String timest2 = sf.format(date);
-        String hash2 = encrypt(String.valueOf(index2) + fill2 + timest2);
-        Model data2 = new Model(index2, fill2, timest2, hash1, hash2);
-        models.add(data2);
+        //Create Node 3
+        Blokchain Block3 = new Blokchain();
+        Block3.clearBlokchain();
+        Block3.createGenesis();
 
-        //data 3
-        int index3 = 102;
-        String fill3 = "Abdullah";
-        String timest3 = sf.format(date);
-        String hash3 = encrypt(String.valueOf(index3) + fill3 + timest3);
-        Model data3 = new Model(index3, fill3, timest3, hash2, hash3);
-        models.add(data3);
+        //Create Data Pool
+        ArrayList dataPool = new ArrayList();
 
-        String data = "";
-        for (int i = 0; i < 3; i++) {
-            int ind = models.get(i + 1).getIndex();
-            String fill = models.get(i + 1).getData();
-            String time = models.get(i + 1).getTimestamp();
-            String prev = models.get(i + 1).getPrevhash();
-            String hash = models.get(i + 1).getHash();
-            System.out.println("Index " + (i + 1) + " : " + ind);
-            System.out.println("Data " + (i + 1) + " : " + fill);
-            data = data + String.valueOf(ind) + ", " + fill + ", " + time + ", " + prev + ", " + hash + "\n";
-        }
+        //Data entered into Data Pool
+        dataPool.add("Data 1");
+        dataPool.add("Data 2");
+        dataPool.add("Data 3");
 
-        String fileName = "data.txt";
+        //Data entered from Data Pool into Block
+        Block nBlock11 = new Block(); //entered into node 1
+        nBlock11.data = (String) dataPool.get(0);
+        Block1.createBlock(nBlock11);
 
-        try {
-            FileWriter fileWriter = new FileWriter(fileName);
-            fileWriter.write(data);
-            fileWriter.close();
+        Block nBlock21 = new Block(); //entered into node 2
+        nBlock21.data = (String) dataPool.get(0);
+        Block2.createBlock(nBlock11);
 
-            System.out.println("File berhasil ditulis!");
-        } catch (IOException e) {
-            System.out.println("Terjadi kesalahan karena: " + e.getMessage());
-        }
+        Block nBlock31 = new Block(); //entered into node 3
+        nBlock31.data = (String) dataPool.get(0);
+        Block3.createBlock(nBlock11);
 
+        dataPool.remove(0);
+
+        Block1.printData();
+        Block2.printData();
+        Block3.printData();
     }
 
-
-    public static String encrypt(String hash) {
-        String hasencrypted = null;
-        try {
-            hasencrypted = toHexString(getSHA(hash));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return hasencrypted;
-    }
-
-    public static byte[] getSHA(String input) throws NoSuchAlgorithmException {
-        // Static getInstance method is called with hashing SHA
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-        // digest() method called
-        // to calculate message digest of an input
-        // and return array of byte
-        return md.digest(input.getBytes(StandardCharsets.UTF_8));
-    }
-
-    public static String toHexString(byte[] hash) {
-        // Convert byte array into signum representation
-        BigInteger number = new BigInteger(1, hash);
-
-        // Convert message digest into hex value
-        StringBuilder hexString = new StringBuilder(number.toString(16));
-
-        // Pad with leading zeros
-        while (hexString.length() < 32) {
-            hexString.insert(0, '0');
-        }
-
-        return hexString.toString();
-    }
 }
