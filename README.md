@@ -1,2 +1,2 @@
 # blokchain
-tugas mata kuliah pilihan icm topik khusus 3 blokchain
+lecture task specific topic icm 3 blockchain
